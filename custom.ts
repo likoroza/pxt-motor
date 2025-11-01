@@ -37,7 +37,8 @@ namespace motors {
     }
 
     //% block="Start moving Motor %motor %direction in %speed speed"
-    //% speed.min=0 speed.max=16
+    //% speed.min=0 speed.max=16 
+    //% weight=3
     export function move_motor(motor: Motor, direction: Direction, speed: number) : void {
         speed = speed * 64 - 1; // map 0 to 1023
         switch (motor) {
@@ -64,14 +65,42 @@ namespace motors {
     }
 
     //% block="Stop Motor %motor"
+    //% weight=2
     export function stop_motor(motor: Motor) {
         switch (motor) {
             case Motor.A: {
                 pins.analogWritePin(PWMA, 0)
+                break;
             }
 
             case Motor.B: {
                 pins.analogWritePin(PWMB, 0)
+                break;
+            }
+        }
+    }
+    //%angle.min=0 angle.max=180
+    //%weight=1
+    //% block="Set %servo to angle %angle"
+    export function servo_write(servo: Servo, angle: number) {
+        let temp = angle * 10 + 500
+        switch (servo) {
+            case Servo.P0:{
+                pins.analogWritePin(S0_PIN, temp)
+
+                break;
+            }
+
+            case Servo.P1: {
+                pins.analogWritePin(S1_PIN, temp)
+
+                break;
+            }
+
+            case Servo.P2: {
+                pins.analogWritePin(S2_PIN, temp)
+
+                break;
             }
         }
     }
